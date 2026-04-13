@@ -27,6 +27,7 @@ def get_infra_info():
         "env":        os.environ.get("ENV_NAME", "dev"),
         "ip":         ip,
         "db_host":    os.environ.get("DB_HOST", "unknown"),
+        "app_version": os.environ.get("APP_VERSION", "unknown"),  # add this
         "deployed_at": os.environ.get("DEPLOYED_AT", datetime.datetime.utcnow().strftime("%Y-%m-%d %H:%M UTC")),
         "tf_version": os.environ.get("TF_VERSION", "Terraform"),
     }
