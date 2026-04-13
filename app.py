@@ -15,14 +15,16 @@ def get_db():
     )
 
 def get_infra_info():
-    hostname = socket.gethostname()
     try:
-        ip = socket.gethostbyname(hostname)
+        # Connect to an external address to find the real outbound IP
+        s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        s.connect(("8.8.8.8", 80))
+        ip = s.getsockname()[0]
+        s.close()
     except:
         ip = "unknown"
     return {
         "env":        os.environ.get("ENV_NAME", "dev"),
-        "hostname":   hostname,
         "ip":         ip,
         "db_host":    os.environ.get("DB_HOST", "unknown"),
         "deployed_at": os.environ.get("DEPLOYED_AT", datetime.datetime.utcnow().strftime("%Y-%m-%d %H:%M UTC")),
