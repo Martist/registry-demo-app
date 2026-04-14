@@ -3,8 +3,10 @@ import socket
 import datetime
 import psycopg2
 from flask import Flask, render_template, request
+from datetime import datetime
 
 app = Flask(__name__)
+DEPLOYED_AT = datetime.datetime.now().strftime("%d. %m. %Y %H:%M")
 
 def get_db():
     return psycopg2.connect(
@@ -28,8 +30,9 @@ def get_infra_info():
         "ip":         ip,
         "db_host":    os.environ.get("DB_HOST", "unknown"),
         "app_version": os.environ.get("APP_VERSION", "unknown"),  # add this
-        "deployed_at": os.environ.get("DEPLOYED_AT", datetime.datetime.utcnow().strftime("%Y-%m-%d %H:%M UTC")),
-        "tf_version": os.environ.get("TF_VERSION", "Terraform"),
+        "deployed_at": DEPLOYED_AT,
+        "cpus":        multiprocessing.cpu_count(),
+        "memory_mb":   round(os.sysconf('SC_PAGE_SIZE') * os.sysconf('SC_PHYS_PAGES') / (1024 * 1024))
     }
 
 @app.route("/", methods=["GET"])
