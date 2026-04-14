@@ -2,11 +2,12 @@ import os
 import socket
 import datetime
 import psycopg2
+import multiprocessing
 from flask import Flask, render_template, request
 from datetime import datetime
 
 app = Flask(__name__)
-DEPLOYED_AT = datetime.datetime.now().strftime("%d. %m. %Y %H:%M")
+DEPLOYED_AT = datetime.now().strftime("%d. %m. %Y %H:%M")
 
 def get_db():
     return psycopg2.connect(
